@@ -1,0 +1,18 @@
+# Clone the repository
+git clone https://github.com/yourusername/bci-artifact-rejection-api.git
+cd bci-artifact-rejection-api
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or
+venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Download sample EEG data
+python scripts/download_sample_data.py
+
+# Run the API
+uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
