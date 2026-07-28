@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# Data
+data/raw/*.edf
+data/raw/*.fif
+data/raw/*.bdf
+data/raw/*.gdf
+data/processed/
+data/augmented/
+*.npy
+*.pkl
+*.h5
+
+# Models
+models/*.joblib
+models/*.h5
+models/*.pkl
+models/*.pt
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.benchmarks/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Docker
+*.pid
+*.sock
+.dockerignore
+
+# Configuration
+config/local.yaml
+config/*.local.yaml
+
+# Monitoring
+prometheus_data/
+grafana_data/
+redis_data/
+postgres_data/
+
+# Documentation
+docs/_build/
+site/
