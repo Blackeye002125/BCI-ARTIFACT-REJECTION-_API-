@@ -1,0 +1,6 @@
+# Using Docker Compose
+docker-compose up -d
+
+# Using Docker only
+docker build -t bci-artifact-rejection -f docker/Dockerfile .
+docker run -p 8000:8000 bci-artifact-rejection
