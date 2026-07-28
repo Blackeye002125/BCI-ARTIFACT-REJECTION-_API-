@@ -1,0 +1,45 @@
+# Development Configuration
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 1
+  debug: true
+  allowed_origins:
+    - "*"
+  allowed_hosts:
+    - "*"
+
+model:
+  ica_method: fastica
+  n_components: 20
+  detection_threshold: 0.7
+  model_path: models/artifact_model_rf.joblib
+
+data:
+  sampling_rate: 250.0
+  band_pass_low: 1.0
+  band_pass_high: 40.0
+  notch_filter: 50.0
+  window_size: 512
+  overlap: 0.5
+
+performance:
+  max_batch_size: 1024
+  cache_size: 100
+  cache_ttl: 3600
+  timeout_seconds: 30
+
+security:
+  encryption_enabled: false
+  rate_limit: 1000
+  rate_limit_window: 60
+
+logging:
+  level: DEBUG
+  file: logs/api.log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 9090
