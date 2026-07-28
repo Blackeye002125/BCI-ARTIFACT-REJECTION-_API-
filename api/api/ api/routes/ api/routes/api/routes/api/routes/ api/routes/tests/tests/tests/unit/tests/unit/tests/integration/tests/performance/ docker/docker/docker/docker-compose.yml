@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # API Service
+  # ============================================
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: bci-api
+    ports:
+      - "8000:8000"
+      - "9090:9090"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DEBUG=False
+      - LOG_LEVEL=INFO
+      - SECRET_KEY=${SECRET_KEY:-change_this_in_production}
+    volumes:
+      - ../data:/app/data
+      - ../models:/app/models
+      - ../logs:/app/logs
+      - ../config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - bci-network
+    depends_on:
+      - redis
+      - prometheus
+
+  # ============================================
+  # Redis Cache
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: bci-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - bci-network
+
+  # ============================================
+  # Prometheus Monitoring
+  # ============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: bci-prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - bci-network
+
+  # ============================================
+  # Grafana Dashboard
+  # ============================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: bci-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ../monitoring/grafana_dashboard.json:/etc/grafana/provisioning/dashboards/bci-dashboard.json
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    restart: unless-stopped
+    networks:
+      - bci-network
+    depends_on:
+      - prometheus
+
+networks:
+  bci-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
