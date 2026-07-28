@@ -1,0 +1,46 @@
+# Production Configuration
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  debug: false
+  allowed_origins:
+    - "https://yourdomain.com"
+    - "https://app.yourdomain.com"
+  allowed_hosts:
+    - "api.yourdomain.com"
+
+model:
+  ica_method: fastica
+  n_components: 20
+  detection_threshold: 0.7
+  model_path: models/artifact_model_rf.joblib
+
+data:
+  sampling_rate: 250.0
+  band_pass_low: 1.0
+  band_pass_high: 40.0
+  notch_filter: 50.0
+  window_size: 512
+  overlap: 0.5
+
+performance:
+  max_batch_size: 2048
+  cache_size: 500
+  cache_ttl: 3600
+  timeout_seconds: 30
+
+security:
+  encryption_enabled: true
+  rate_limit: 500
+  rate_limit_window: 60
+
+logging:
+  level: INFO
+  file: logs/api.log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 9090
