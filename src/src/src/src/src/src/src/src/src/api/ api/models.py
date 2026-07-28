@@ -63,4 +63,31 @@ class HealthResponse(BaseModel):
     """
     Health check response model.
     """
-    status: str = Field("healthy", description
+    status: str = Field("healthy", description="API status")
+    version: str = Field("2.0.0", description="API version")
+    active_connections: int = Field(0, description="Active WebSocket connections")
+    model_loaded: bool = Field(False, description="Whether model is loaded")
+    cache_size: int = Field(0, description="Cache size")
+    uptime_seconds: float = Field(0.0, description="API uptime in seconds")
+    timestamp: str = Field(..., description="Response timestamp")
+
+class ModelInfoResponse(BaseModel):
+    """
+    Model information response model.
+    """
+    model_type: str = Field(..., description="Type of model")
+    model_path: str = Field(..., description="Path to model file")
+    loaded: bool = Field(..., description="Whether model is loaded")
+    training_date: Optional[str] = Field(None, description="Training date")
+    accuracy: Optional[float] = Field(None, description="Model accuracy")
+    
+class BatchResponse(BaseModel):
+    """
+    Response model for batch processing.
+    """
+    status: str = Field("success", description="Batch status")
+    total_samples: int = Field(..., description="Total samples processed")
+    artifacts_removed: int = Field(..., description="Total artifacts removed")
+    processing_time_ms: float = Field(..., description="Total processing time")
+    average_time_per_sample_ms: float = Field(..., description="Average time per sample")
+    output_format: str = Field(..., description="Output format")
